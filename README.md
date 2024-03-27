@@ -24,3 +24,13 @@ This repository contains solidity based smart contracts to demonstrate storage a
       - Override the store function from its parent SimpleStorage contract
       - Perform a custom logic by incrementing the input number before storing
 
+### 4. FundMe (FundMe.sol)
+   This smart contract facilitates crowdfunding by allowing users to contribute Ether. It enforces a minimum funding threshold denominated in USD and utilizes an 
+   external price feed to determine Ether's USD value. Key functionalities include:
+
+      - Fund(): Enables users to contribute Ether to the contract, ensuring that the amount sent meets or exceeds the specified minimum funding threshold.
+      - getPrice(): Retrieves the latest price of Ether in USD from an external price feed.
+      - getVersion(): Provides the version of the price feed contract being utilized.
+      - getConversionRate(uint256 ethAmount): Calculates the conversion rate of Ether to USD based on the amount of Ether provided.
+      
+   #### Note: This contract's features rely on being connected to a simulated wallet environment for testing purposes, and it does not handle real funds.
