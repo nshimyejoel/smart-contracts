@@ -11,10 +11,17 @@ import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/Ag
 contract FundMe {
     uint256 minimumUsd = 50 * 1e18;
 
+    // array that will used to store all funders
+    address[] public funders;
+    //storing how much of money each funder has funded
+    mapping (address => uint256) public addressToAmountFunded;
+
      //Allows users to fund the contract with Ether
 
     function fund() public payable  {
         require(getConversionRate(msg.value) > minimumUsd,"Didn't send enough!");
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     // Retrieves the latest price of Ether in USD from an external price feed.
