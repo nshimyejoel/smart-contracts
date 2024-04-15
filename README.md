@@ -29,8 +29,14 @@ This repository contains solidity based smart contracts to demonstrate storage a
    external price feed to determine Ether's USD value. Key functionalities include:
 
       - Fund(): Enables users to contribute Ether to the contract, ensuring that the amount sent meets or exceeds the specified minimum funding threshold.
+      - withdraw(): Withdraws funds from the contract to the owner's account, ensuring only the contract owner can execute this action.
+    
+### 4. FundMeLibrary (FundMeLibrary.sol)
+   This library facilitates crowdfunding by allowing users to contribute Ether. It enforces a minimum funding threshold denominated in USD and utilizes an external 
+   price feed to determine Ether's USD value. Key functionalities include:
+
       - getPrice(): Retrieves the latest price of Ether in USD from an external price feed.
       - getVersion(): Provides the version of the price feed contract being utilized.
       - getConversionRate(uint256 ethAmount): Calculates the conversion rate of Ether to USD based on the amount of Ether provided.
       
-   #### Note: This contract's features rely on being connected to a simulated wallet environment for testing purposes, and it does not handle real funds.
+   #### Note: This contract's features rely on being connected to a simulated wallet environment for testing purposes.
