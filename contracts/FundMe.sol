@@ -1,43 +1,48 @@
 // SPDX-License-Identifier: MIT
 
+
 pragma solidity ^0.8.0;
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-
-
+import "contracts/FundMeLibrary.sol";
 contract FundMe {
+    using  FundMeLibrary for uint256;
     uint256 minimumUsd = 50 * 1e18;
 
     // array that will used to store all funders
     address[] public funders;
+
     //storing how much of money each funder has funded
     mapping (address => uint256) public addressToAmountFunded;
 
-     //Allows users to fund the contract with Ether
+    address public owner;
+    constructor() {
+        owner = msg.sender;
+    }
 
+     //Allows users to fund the contract with Ether
     function fund() public payable  {
-        require(getConversionRate(msg.value) > minimumUsd,"Didn't send enough!");
+        require(msg.value.getConversionRate() > minimumUsd,"Didn't send enough!");
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
 
-    // Retrieves the latest price of Ether in USD from an external price feed
-    function getPrice() public view returns (uint256) {
-         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        (,int256 price,,,) = priceFeed.latestRoundData();
-        return uint256(price * 1e18);
-    } 
+    //resetting amount funded 
+    function withdraw() public onlyOwner{
+        for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++){
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
 
-    // Retrieves the version of the price feed contract
-    function getVersion() public view returns (uint256) {
-        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
-        return priceFeed.version();
+        //resetting funder array(resetting all funders at the same time without looping)
+        funders = new address[](0);
+      
+        // withdrawing funds
+        (bool callSuccess, ) = payable (msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "Call failed");
     }
 
-    // Calculates the conversion rate of Ether to USD
-    function getConversionRate(uint256 ethAmount) public view returns (uint256){
-        uint256 ethPrice = getPrice();
-        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 10e18;
-        return ethAmountInUsd;
+  // Modifier for checking the owner of the smart contract to withdraw the funds
+    modifier onlyOwner{
+        require(msg.sender == owner);
+        _;
     }
-
 }
