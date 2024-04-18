@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "contracts/FundMeLibrary.sol";
 contract FundMe {
     using  FundMeLibrary for uint256;
-    uint256 minimumUsd = 50 * 1e18;
+    uint256 constant minimumUsd = 50 * 1e18;
 
     // array that will used to store all funders
     address[] public funders;
@@ -13,7 +13,7 @@ contract FundMe {
     //storing how much of money each funder has funded
     mapping (address => uint256) public addressToAmountFunded;
 
-    address public owner;
+    address public immutable owner;
     constructor() {
         owner = msg.sender;
     }
