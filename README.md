@@ -31,7 +31,7 @@ This repository contains solidity based smart contracts to demonstrate storage a
       - Fund(): Enables users to contribute Ether to the contract, ensuring that the amount sent meets or exceeds the specified minimum funding threshold.
       - withdraw(): Withdraws funds from the contract to the owner's account, ensuring only the contract owner can execute this action.
     
-### 4. FundMeLibrary (FundMeLibrary.sol)
+### 5. FundMeLibrary (FundMeLibrary.sol)
    This library facilitates crowdfunding by allowing users to contribute Ether. It enforces a minimum funding threshold denominated in USD and utilizes an external 
    price feed to determine Ether's USD value. Key functionalities include:
 
